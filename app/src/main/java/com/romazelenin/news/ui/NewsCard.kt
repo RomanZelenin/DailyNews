@@ -2,7 +2,6 @@ package com.romazelenin.news.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -28,11 +26,7 @@ import com.romazelenin.news.ui.theme.NewsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsCard(
-    modifier: Modifier = Modifier.border(
-        width = 1.dp,
-        color = Color.LightGray,
-        RoundedCornerShape(5.dp)
-    ),
+    modifier: Modifier = Modifier,
     title: String,
     description: String,
     publishedAt: String,
