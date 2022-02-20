@@ -1,4 +1,4 @@
-package com.romazelenin.news.domain
+package com.romazelenin.news.domain.entity
 
 sealed class AppState {
     object Loading : AppState()

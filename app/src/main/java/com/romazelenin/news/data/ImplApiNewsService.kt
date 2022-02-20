@@ -2,7 +2,7 @@ package com.romazelenin.news.data
 
 import com.romazelenin.news.data.entity.toNewsItem
 import com.romazelenin.news.domain.ApiNewsService
-import com.romazelenin.news.domain.AppState
+import com.romazelenin.news.domain.entity.AppState
 import com.romazelenin.news.domain.ArticleCategory
 import com.romazelenin.news.domain.Country
 import kotlinx.coroutines.flow.Flow

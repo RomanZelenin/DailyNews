@@ -1,5 +1,6 @@
 package com.romazelenin.news.domain
 
+import com.romazelenin.news.domain.entity.AppState
 import kotlinx.coroutines.flow.Flow
 
 interface ApiNewsService {
