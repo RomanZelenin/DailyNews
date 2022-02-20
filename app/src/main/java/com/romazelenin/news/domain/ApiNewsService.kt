@@ -1,6 +1,5 @@
 package com.romazelenin.news.domain
 
-import com.romazelenin.news.domain.entity.NewsItem
 import kotlinx.coroutines.flow.Flow
 
 interface ApiNewsService {
@@ -8,7 +7,7 @@ interface ApiNewsService {
         query: String,
         category: ArticleCategory = ArticleCategory.GENERAL,
         country: Country
-    ): Flow<AppState<List<NewsItem>>>
+    ): Flow<AppState>
 }
 
 enum class ArticleCategory {
