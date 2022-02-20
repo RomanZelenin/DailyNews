@@ -1,7 +1,7 @@
 package com.romazelenin.news.domain
 
-sealed class AppState<T> {
-    object Loading : AppState<Nothing>()
-    class Error<T>(throwable: Throwable, data: T?) : AppState<T>()
-    class Success<T>(data: T) : AppState<T>()
+sealed class AppState {
+    object Loading : AppState()
+    class Error<T>(val throwable: Throwable? = null, val data: T? = null) : AppState()
+    class Success<T>(val data: T) : AppState()
 }

@@ -1,5 +1,6 @@
 package com.romazelenin.news.data
 
+import com.romazelenin.news.data.entity.NewsResponse
 import com.romazelenin.news.domain.ArticleCategory
 import com.romazelenin.news.domain.Country
 import okhttp3.OkHttpClient
