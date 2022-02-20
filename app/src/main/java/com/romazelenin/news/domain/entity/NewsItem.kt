@@ -8,5 +8,5 @@ data class NewsItem(
     val description: String,
     val publishedAt: Date,
     val source: String? = null,
-    val imgUrl: URL
+    val imgUrl: URL? = null
 )
