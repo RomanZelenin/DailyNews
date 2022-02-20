@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +43,7 @@ fun ListNewsScreen(modifier: Modifier = Modifier, listNews: List<NewsItem>) {
             })
         }) {
         LazyColumn(modifier = modifier.padding(horizontal = 16.dp)) {
+            item { Spacer(modifier = Modifier.height(16.dp)) }
             itemsIndexed(listNews) { index, newsItem ->
                 NewsCard(
                     modifier = Modifier.border(
@@ -51,7 +53,7 @@ fun ListNewsScreen(modifier: Modifier = Modifier, listNews: List<NewsItem>) {
                     ),
                     title = newsItem.title,
                     description = newsItem.description,
-                    publishedAt = newsItem.publishedAt.formatToString(),
+                    publishedAt = newsItem.publishedAt.formatToString(LocalConfiguration.current.locales[0]),
                     image = newsItem.imgUrl?.let { rememberImagePainter(data = it.toString()) }
                         ?: painterResource(id = R.drawable.test_news_image),
                     source = newsItem.source
