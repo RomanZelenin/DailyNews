@@ -8,7 +8,7 @@ interface ApiNewsService {
         query: String,
         category: ArticleCategory = ArticleCategory.GENERAL,
         country: Country
-    ): Flow<List<NewsItem>>
+    ): Flow<AppState<List<NewsItem>>>
 }
 
 enum class ArticleCategory {
