@@ -40,7 +40,7 @@ fun NewsCard(
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp)),
+                    .clip(RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)),
                 painter = image,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = null
