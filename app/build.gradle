@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -58,6 +59,14 @@ dependencies {
 
     //SwipeRefresh
     implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.2-alpha'
+
+    //Room
+    def roomVersion = "2.4.1"
+
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
