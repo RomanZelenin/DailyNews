@@ -4,10 +4,14 @@ import android.content.res.Configuration
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.romazelenin.news.domain.entity.AppState
+import com.romazelenin.news.domain.entity.NewsItem
+import com.romazelenin.news.ui.ListNews
 import com.romazelenin.news.ui.theme.NewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -16,6 +20,8 @@ fun ListNewsScreen(
     modifier: Modifier = Modifier,
     viewModel: NewsScreenViewModel
 ) {
+    var query by rememberSaveable { mutableStateOf("") }
+
     Scaffold(modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(title = {
@@ -29,6 +35,16 @@ fun ListNewsScreen(
                 }
             })
         }) {
+        val listNewsState by viewModel.getNews(query = query)
+            .collectAsState(initial = AppState.Loading)
+
+        when (listNewsState) {
+            is AppState.Error<*> -> {}
+            AppState.Loading -> {}
+            is AppState.Success<*> -> {
+                ListNews(news = (listNewsState as AppState.Success<List<NewsItem>>).data)
+            }
+        }
 
     }
 }
