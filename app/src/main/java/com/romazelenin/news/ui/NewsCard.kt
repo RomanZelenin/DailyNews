@@ -4,10 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,20 +28,31 @@ fun NewsCard(
     description: String,
     publishedAt: String,
     source: String? = null,
-    image: Painter
+    image: Painter?
 ) {
-    Card(
-        modifier = modifier
+    ElevatedCard(
+        modifier = modifier,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)),
-                painter = image,
-                contentScale = ContentScale.FillBounds,
-                contentDescription = null
-            )
+            if (image != null) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                bottomEnd = 24.dp,
+                                bottomStart = 24.dp,
+                                topStart = 8.dp,
+                                topEnd = 8.dp
+                            )
+                        ),
+                    painter = image,
+                    contentScale = ContentScale.FillBounds,
+                    contentDescription = null
+                )
+            }
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = title,
