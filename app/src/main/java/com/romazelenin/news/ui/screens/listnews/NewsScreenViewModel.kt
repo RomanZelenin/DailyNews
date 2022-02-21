@@ -11,20 +11,29 @@ import kotlinx.coroutines.launch
 
 class NewsScreenViewModel(private val repository: Repository) : ViewModel() {
 
-    private val query = MutableStateFlow("")
-    private val category = MutableStateFlow(ArticleCategory.GENERAL)
-    private val country = MutableStateFlow(Country.US)
-
-    val listNews = MutableStateFlow<AppState>(AppState.Loading)
+    private val _query = MutableStateFlow("")
+    private val _category = MutableStateFlow(ArticleCategory.GENERAL)
+    private val _country = MutableStateFlow(Country.US)
+    private val _listNewsState = MutableStateFlow<AppState>(AppState.Starting)
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
 
     init {
         viewModelScope.launch {
-            query.collectLatest {
-                repository.getNews(query.value, category.value, country.value).collect {
-                    listNews.value = it
-                }
+            _query.collectLatest {
+                _isRefreshing.value = true
+                repository.getNews(_query.value, _category.value, _country.value)
+                    .collect { _listNewsState.value = it }
+                _isRefreshing.value = false
             }
         }
+    }
+
+    fun refresh() {
+        _isRefreshing.value = true
+        val prevQuery = _query.value
+        _query.value = " "
+        _query.value = prevQuery
     }
 
     fun getNews(
@@ -32,10 +41,10 @@ class NewsScreenViewModel(private val repository: Repository) : ViewModel() {
         category: ArticleCategory = ArticleCategory.GENERAL,
         country: Country = Country.US
     ): Flow<AppState> {
-        this.query.value = query
-        this.category.value = category
-        this.country.value = country
-        return listNews
+        this._query.value = query
+        this._category.value = category
+        this._country.value = country
+        return _listNewsState
     }
 
 }

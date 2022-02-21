@@ -1,6 +1,10 @@
 package com.romazelenin.news.ui.screens.listnews
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -9,6 +13,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.romazelenin.news.domain.entity.AppState
 import com.romazelenin.news.domain.entity.NewsItem
 import com.romazelenin.news.ui.ListNews
@@ -21,8 +27,11 @@ fun ListNewsScreen(
     viewModel: NewsScreenViewModel
 ) {
     var query by rememberSaveable { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
+
 
     Scaffold(modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(title = {
                 Text(
@@ -35,17 +44,38 @@ fun ListNewsScreen(
                 }
             })
         }) {
-        val listNewsState by viewModel.getNews(query = query)
-            .collectAsState(initial = AppState.Loading)
 
-        when (listNewsState) {
-            is AppState.Error<*> -> {}
-            AppState.Loading -> {}
-            is AppState.Success<*> -> {
-                ListNews(news = (listNewsState as AppState.Success<List<NewsItem>>).data)
+        val listNewsState by viewModel.getNews(query = query)
+            .collectAsState(initial = AppState.Starting)
+        val isRefreshing by viewModel.isRefreshing.collectAsState()
+
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = { viewModel.refresh() }) {
+            when (listNewsState) {
+                AppState.Starting -> {}
+                AppState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    )
+                }
+                is AppState.Success<*> -> {
+                    ListNews(news = (listNewsState as AppState.Success<List<NewsItem>>).data)
+                }
+                is AppState.Error<*> -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    )
+                    LaunchedEffect(true) {
+                        snackbarHostState.showSnackbar("Error loading news")
+                    }
+                }
             }
         }
-
     }
 }
 
