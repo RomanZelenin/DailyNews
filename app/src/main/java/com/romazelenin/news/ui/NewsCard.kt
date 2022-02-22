@@ -2,6 +2,7 @@ package com.romazelenin.news.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -28,10 +29,11 @@ fun NewsCard(
     description: String,
     publishedAt: String,
     source: String? = null,
-    image: Painter?
+    image: Painter? = null,
+    onClickAction:()->Unit = {}
 ) {
     ElevatedCard(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClickAction),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             if (image != null) {
