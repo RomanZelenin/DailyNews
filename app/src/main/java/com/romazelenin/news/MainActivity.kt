@@ -1,5 +1,6 @@
 package com.romazelenin.news
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +11,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
@@ -36,7 +39,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val currentThemeIsDark = isSystemInDarkTheme()
+            val currentThemeIsDark =
+                LocalContext.current.getSharedPreferences("settings", Context.MODE_PRIVATE)
+                    .getBoolean("darkTheme", isSystemInDarkTheme())
             val isDarkTheme = rememberSaveable { mutableStateOf(currentThemeIsDark) }
             val uiMode =
                 LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()
@@ -49,7 +54,15 @@ class MainActivity : ComponentActivity() {
                 NewsTheme {
                     ListNewsScreen(
                         viewModel = vm,
-                        onClickChangeTheme = { isDarkTheme.value = !isDarkTheme.value })
+                        onClickChangeTheme = {
+                            isDarkTheme.value = !isDarkTheme.value
+                            applicationContext.getSharedPreferences(
+                                "settings",
+                                Context.MODE_PRIVATE
+                            ).edit {
+                                putBoolean("darkTheme", isDarkTheme.value)
+                            }
+                        })
                 }
             }
 
