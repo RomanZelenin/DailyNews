@@ -1,10 +1,15 @@
 package com.romazelenin.news.domain
 
+import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import coil.compose.rememberImagePainter
 import coil.size.Scale
-import com.romazelenin.news.R
 import java.net.URL
 import java.text.DateFormat
 import java.util.*
@@ -23,4 +28,15 @@ fun URL?.loadImage(): Painter? {
                 scale(Scale.FILL)
             })
     }
+}
+
+
+fun URL.launchInAppBrowser(context: Context, toolbarColor: Color) {
+    val colorSchemeParams =
+        CustomTabColorSchemeParams.Builder().setToolbarColor(toolbarColor.toArgb())
+            .build()
+    val customTabsIntent =
+        CustomTabsIntent.Builder().setDefaultColorSchemeParams(colorSchemeParams)
+            .build()
+    customTabsIntent.launchUrl(context, Uri.parse(this.toString()))
 }
