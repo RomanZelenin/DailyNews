@@ -42,9 +42,7 @@ fun ListNews(modifier: Modifier = Modifier, news: List<NewsItem>) {
                 image = newsItem.imgUrl.loadImage(),
                 source = newsItem.source,
                 onClickAction = {
-                    scope.launch {
-                        newsItem.url.launchInAppBrowser(context, toolbarColor)
-                    }
+                    scope.launch { newsItem.url.launchInAppBrowser(context, toolbarColor) }
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))

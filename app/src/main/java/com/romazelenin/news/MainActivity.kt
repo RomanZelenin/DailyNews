@@ -15,29 +15,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import com.romazelenin.news.data.datasource.remote.ImplApiNewsService
-import com.romazelenin.news.data.ImplRepository
-import com.romazelenin.news.data.datasource.local.ArticleDb
+import com.romazelenin.news.domain.Repository
 import com.romazelenin.news.ui.screens.listnews.ListNewsScreen
 import com.romazelenin.news.ui.screens.listnews.NewsScreenViewModel
 import com.romazelenin.news.ui.theme.NewsTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var repository: Repository
 
     val vm by viewModels<NewsScreenViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val articleDao =
-                    Room.inMemoryDatabaseBuilder(applicationContext, ArticleDb::class.java).build()
-                        .getArticleDao()
-                return NewsScreenViewModel(ImplRepository(ImplApiNewsService(), articleDao)) as T
+                return NewsScreenViewModel(repository) as T
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as NewsApplication).appComponent.inject(this)
+
         setContent {
             val currentThemeIsDark =
                 LocalContext.current.getSharedPreferences("settings", Context.MODE_PRIVATE)

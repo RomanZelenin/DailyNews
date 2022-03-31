@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -33,13 +34,12 @@ fun ListNewsScreen(
     var query by rememberSaveable { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
-
     Scaffold(modifier = modifier,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(title = {
                 Text(
-                    text = "News",
+                    text = stringResource(R.string.news),
                     style = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
                 )
             }, actions = {
@@ -79,8 +79,9 @@ fun ListNewsScreen(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                     )
+                    val errorLoadingMessage = stringResource(R.string.error_loading_news)
                     LaunchedEffect(true) {
-                        snackbarHostState.showSnackbar("Error loading news")
+                        snackbarHostState.showSnackbar(errorLoadingMessage)
                     }
                 }
             }
