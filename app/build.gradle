@@ -57,8 +57,10 @@ dependencies {
     //Coil
     implementation 'io.coil-kt:coil-compose:1.4.0'
 
-    //SwipeRefresh
-    implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.2-alpha'
+    //accompanist libs
+    def accompanistVersion = "0.24.5-alpha"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
     //Room
     def roomVersion = "2.4.1"
