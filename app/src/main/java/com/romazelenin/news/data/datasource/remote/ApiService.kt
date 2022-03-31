@@ -1,4 +1,4 @@
-package com.romazelenin.news.data
+package com.romazelenin.news.data.datasource.remote
 
 import com.romazelenin.news.data.entity.NewsResponse
 import com.romazelenin.news.domain.ArticleCategory
